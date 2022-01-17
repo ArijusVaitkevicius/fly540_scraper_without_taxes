@@ -196,22 +196,22 @@ def main():
     # This part calls flights_scraper function twice with different arguments and executes it in parallel.
     flights_scraper_return = []
 
-    # Sets max 'workers' number depending on the amount of arguments and CPU capability.
-    workers = len(dates_list) if len(dates_list) < cpu_count() - 1 else cpu_count() - 1
-    pool = Pool(workers)
+    try:
+        # Sets max 'workers' number depending on the amount of arguments and CPU capability.
+        workers = len(dates_list) if len(dates_list) < cpu_count() - 1 else cpu_count() - 1
+        pool = Pool(workers)
 
-    for dates in dates_list:  # This loop calls function twice and appends returned data to flights_scraper_return list.
-        try:
+        # This loop calls function twice and appends returned data to flights_scraper_return list.
+        for dates in dates_list:
             flights_scraper_return.append(
                 pool.apply_async(flights_scraper, args=(departure_iata, arrival_iata, currency, dates[0], dates[1],))
             )
-            log('INFO', f'Page was successfully scraped with arguments: '
-                        f'{departure_iata} {arrival_iata} {currency} {dates[0]} {dates[1]}')
-        except:
-            log('Error', f'Failed to scrape page with arguments: '
-                f'{departure_iata} {arrival_iata} {currency} {dates[0]} {dates[1]}')
-    pool.close()
-    pool.join()
+        pool.close()
+        pool.join()
+
+        log('INFO', 'Page was successfully scraped.')
+    except:
+        log('Error', 'Failed to scrape page.')
 
     data = []
 
