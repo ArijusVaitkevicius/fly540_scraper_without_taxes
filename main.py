@@ -53,7 +53,7 @@ def log(level, message):
 def flights_scraper(dep_iata, arr_iata, cur, dep_date, ret_date):
     """
     This function generates URL by giving arguments.
-    Gets page html source code and counts all possible flight combinations and returns their indexes.
+    Gets page html source code and counts all possible flight combinations and returns required data from page.
 
     :param str dep_iata: Departure flight IATA airport code
     :param str arr_iata: Arrival flight IATA airport code
